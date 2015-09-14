@@ -1,5 +1,8 @@
 
 // These keep JSHint quiet if you're using it (highly recommended!)
+var margin = {top: 25, right: 10, bottom: 10, left: 20};
+var h = 390 - margin.top - margin.bottom;
+var w = 400 - margin.right - margin.left;
 
 //part1
  document.getElementById("staircase").onclick= function staircase() {
@@ -47,9 +50,7 @@ function update(error, data) {
             d.b = parseFloat(d.b);
         });
     }
-    var margin = {top: 25, right: 10, bottom: 10, left: 20};
-    var h = 390 - margin.top - margin.bottom;
-    var w = 400 - margin.right - margin.left;
+
 
 
     //set width and height append a g element to hold the main
@@ -71,10 +72,10 @@ function update(error, data) {
         .domain([0, d3.max(data, function (d) {
             return d.b;
         })])
-        .range([0, 150]);
+        .range([0, h]);
     var iScale = d3.scale.linear()
         .domain([0, data.length])
-        .range([0, 110]);
+        .range([0, h]);
 
     // ****** TODO: PART III (you will also edit in PART V) ******
 
@@ -105,18 +106,9 @@ function update(error, data) {
     });
 
     // TODO: Select and update the 'b' bar chart bars
-    //var svg1 = d3.select('#bar-chart2')
-    //    .attr({
-    //        width: w + margin.right + margin.left,
-    //        height: h + margin.top + margin.bottom
-    //    })
-    //    .append("g")
-    //    .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
     var selection1 = d3.selectAll("#bar-chart2 rect")
         .data(data);
-
-
 
     //probably don't need since we are not adding extra elements
     selection1.enter().append("rect");
@@ -133,6 +125,8 @@ function update(error, data) {
         });
 
     // TODO: Select and update the 'a' line chart path using this line generator
+    createSvg('#line-chart1');
+
     var aLineGenerator = d3.svg.line()
         .x(function (d, i) {
             return iScale(i);
@@ -140,9 +134,25 @@ function update(error, data) {
         .y(function (d) {
             return aScale(d.a);
         });
+    d3.select('#line-chart1 path')
+        .transition()
+        .duration(3000)
+        .attr("d",aLineGenerator(data));
+
 
     // TODO: Select and update the 'b' line chart path (create your own generator)
-
+    createSvg('#line-chart2');
+    var bLineGenerator = d3.svg.line()
+        .x(function(d,i){
+            return iScale(i);
+        })
+        .y(function(d){
+            return bScale(d.b)
+        });
+    d3.select("#line-chart2 path")
+        .transition()
+        .duration(3000)
+        .attr("d",bLineGenerator(data));
     // TODO: Select and update the 'a' area chart path using this line generator
     var aAreaGenerator = d3.svg.area()
         .x(function (d, i) {
@@ -154,6 +164,7 @@ function update(error, data) {
         });
 
     // TODO: Select and update the 'b' area chart path (create your own generator)
+
 
     // TODO: Select and update the scatterplot points
 
@@ -181,4 +192,15 @@ function randomSubset() {
 
         update(error, subset);
     });
+
+}
+function createSvg(id)
+{
+    d3.select('id')
+        .attr({
+            width: w + margin.right + margin.left,
+            height: h + margin.top + margin.bottom
+        })
+        .append("g")
+        .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 }
