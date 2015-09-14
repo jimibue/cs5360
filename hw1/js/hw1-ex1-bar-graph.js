@@ -2,7 +2,86 @@
  * Created by jcc on 9/9/15.
  */
 
+var lineChart = function()
+{
+    var margin = {top: 10, right: 10, bottom: 10, left: 20};
+    var w = 400 - margin.left - margin.right;
+    var h = 400 - margin.top - margin.bottom;
+    var xData = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0, ];
+    //xData = [9.14, 8.14, 8.74, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74];
 
+
+    var xScale = d3.scale.ordinal()
+        .domain(d3.range(xData.length))
+        .rangeRoundBands([0,w],.0);
+
+    var yScale = d3.scale.linear()
+        .domain([0,d3.max(xData)+5])
+        .range([0,h]);
+
+    var line = d3.svg.line()
+        .x(function(d,i){return Math.floor(xScale(i))})
+        .y(function(d){return Math.floor(yScale(d))});
+
+    var svg = d3.select('body')
+        .append('svg:svg')
+        .attr("width", w + margin.left + margin.right)
+        .attr("height", w + margin.top + margin.bottom)
+
+
+    svg.append("svg:path").attr("d",line(xData));
+
+
+
+
+};
+
+
+var lineChartArea = function()
+{
+    var margin = {top: 10, right: 10, bottom: 10, left: 20};
+    var w = 400 - margin.left - margin.right;
+    var h = 400 - margin.top - margin.bottom;
+    var xData = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0, ];
+    xData = [9.14, 8.14, 8.74, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74];
+
+
+    var xScale = d3.scale.ordinal()
+        .domain(d3.range(xData.length))
+        .rangeRoundBands([0,w],.0);
+
+    var yScale = d3.scale.linear()
+        .domain([0,d3.max(xData)+5])
+        .range([0,h]);
+
+    var area = d3.svg.area()
+        .x(function(d,i){return Math.floor(xScale(i))})
+        .y0(h)
+        .y1(function(d){return Math.floor(yScale(d))});
+
+    var line = d3.svg.line()
+        .x(function(d,i){return Math.floor(xScale(i))})
+        .y(function(d){return Math.floor(yScale(d))});
+
+    var svg = d3.select('body')
+        .append('svg:svg')
+        .attr("width", w + margin.left + margin.right)
+        .attr("height", w + margin.top + margin.bottom)
+
+
+    svg.append("path")
+        .datum(xData)
+        .attr("class", "area")
+        .attr("d", area);
+
+
+    //svg.append("svg:path").attr("d",line(xData));
+    svg.append("svg:path").attr("class", "area").attr("d",area(xData));
+
+
+
+
+};
 
 //dimensions, data and margins SEE
 //   http://bl.ocks.org/mbostock/3019563
@@ -13,10 +92,10 @@
 var Example1_1 = function() {
     var margin = {top: 10, right: 10, bottom: 10, left: 20};
     var w = 400 - margin.left - margin.right;
-    var h = w - margin.top - margin.bottom;
+    var h = 400 - margin.top - margin.bottom;
     var padding = 3;
-    var xData = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0, 9.2,20 ];
-    var y = [9.14, 8.14, 8.74, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74];
+    var xData = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0, ];
+    xData = [9.14, 8.14, 8.74, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74];
 
 //scales notice the use of the ordinal scale
 // see http://alignedleft.com/tutorials/d3/scales
@@ -43,39 +122,40 @@ var Example1_1 = function() {
         .append('rect')
         .attr({
             width: function () {
-                return xScale.rangeBand();
+                return Math.floor(xScale.rangeBand());
             },
             height: function (d) {
-                return yScale(d);
+                return Math.floor(yScale(d));
             },
             x: function (d, i) {
-                return xScale(i);
+                return Math.floor(xScale(i));
             },
             y: function (d) {
-                return h - yScale(d);
+                return Math.floor(h - yScale(d));
             },
             fill: "steelblue",
             stroke: "grey"
         });
+    console.log(svg);
 
 //append the text
-    svg.selectAll('text')
-        .data(xData)
-        .enter()
-        .append('text')
-        .text(function (d) {
-            return d;
-        })
-        .attr({
-            x: function (d, i) {
-                return xScale(i) + xScale.rangeBand() / 2;
-            },
-            y: function (d) {
-                return h - yScale(d) + 15;
-            },
-            fill: "white",
-            "text-anchor": "middle"
-        });
+//    svg.selectAll('text')
+//        .data(xData)
+//        .enter()
+//        .append('text')
+//        .text(function (d) {
+//            return d;
+//        })
+//        .attr({
+//            x: function (d, i) {
+//                return xScale(i) + xScale.rangeBand() / 2;
+//            },
+//            y: function (d) {
+//                return h - yScale(d) + 15;
+//            },
+//            fill: "white",
+//            "text-anchor": "middle"
+//        });
 };//END OF EXAMPLE 1
 
 //This example follows Example1_2 but changes with updated data
@@ -186,7 +266,7 @@ var Example1_3 = function() {
                 str +=" "+p3;
                 var p4 = (xScale(i)+xScale.rangeBand()+dp) +','+(h - yScale(d)-dp);
                 str +=" "+p4;
-                console.log(str);
+                //console.log(str);
                 return str;
 
             },
@@ -216,7 +296,7 @@ var Example1_3 = function() {
                 str +=" "+p3;
                 var p4 = (xScale(i)+dp) +','+(h - yScale(d)-dp);
                 str +=" "+p4;
-                console.log(str);
+                //console.log(str);
                 return str;
 
             },

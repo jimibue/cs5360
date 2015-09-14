@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Homework 2 Solution</title>
     <style>
+        path{
+            fill:none;
+        }
         .barChart {
             fill: steelblue;
             stroke: darkgray;
@@ -46,21 +49,22 @@
             padding: 1em;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 </head>
 <body>
 <body>
 
 <h3>CS-5630 / CS-6630 Homework 2</h3>
-<span>Your Name</span>
-<span>Your Email Address</span>
-<span>u0123456</span>
+<span>James Yeates</span>
+<span>jimibue@gmail.com</span>
+
 
 <br/>
 <hr/>
 <br/>
 
 <span>
-    <button>Staircase</button>
+    <button id="staircase">Staircase</button>
 </span>
 
 <span>
@@ -81,36 +85,61 @@
 
 <div>
     <h2>Bar Charts</h2>
-    <svg width="200" height="200">
-        <!-- Paste your HW 1 solution here -->
+    <svg width="400" height="390" id="bar-chart1">
+
+        <rect width="30" height="250" x="5" y="100" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="200" x="38" y="150" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="325" x="71" y="25" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="225" x="104" y="124" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="275" x="137" y="75" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="350" x="170" y="0" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="150" x="203" y="200" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="100" x="236" y="250" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="300" x="269" y="50" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="175" x="302" y="175" fill="steelblue" stroke="grey"></rect>
+        <rect width="30" height="125" x="335" y="225" fill="steelblue" stroke="grey"></rect>
+
     </svg>
 
-    <svg width="200" height="200">
-        <!-- Paste your HW 1 solution here -->
+    <svg width="400" height="390" id="bar-chart2">
+
+        <rect width="32" height="345" x="7" y="4" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="307" x="43" y="42" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="330" x="79" y="19" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="350" x="115" y="0" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="306" x="151" y="43" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="231" x="187" y="118" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="117" x="223" y="232" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="345" x="259" y="4" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="274" x="295" y="75" fill="steelblue" stroke="grey"></rect>
+        <rect width="32" height="179" x="331" y="170" fill="steelblue" stroke="grey"></rect>
+
     </svg>
 </div>
 
 <div>
     <h2>Line Charts</h2>
 
-    <svg width="200" height="200">
-        <!-- Paste your HW 1 solution here -->
+    <svg width="400" height="390">
+        <path class="lines" d="M4,200L37,160L70,260L103,180L136,220L169,280L202,120L235,80L268,240L301,140L334,100"></path>
     </svg>
 
-    <svg width="200" height="200">
-        <!-- Paste your HW 1 solution here -->
+    <svg width="400" height="390">
+        <path class="lines" d="M0,243L37,216L74,232L111,246L148,215L185,163L222,82L259,243L296,193L333,126"></path>
     </svg>
 </div>
 
 <div>
     <h2>Area Charts</h2>
 
-    <svg width="200" height="200">
-        <!-- Paste your HW 1 solution here -->
+    <svg width="400" height="390">
+        <path class="areas" d="M4,200L37,160L70,260L103,180L136,220L169,280L202,120L235,80L268,240L301,140L334,100L334,380L301,380L268,380L235,380L202,380L169,380L136,380L103,380L70,380L37,380L4,380Z"></path>
+
     </svg>
 
-    <svg width="200" height="200">
-        <!-- Paste your HW 1 solution here -->
+    <svg width="400" height="390">
+        <path class="areas" d="M0,243L37,216L74,232L111,246L148,215L185,163L222,82L259,243L296,193L333,126L333,380L296,380L259,380L222,380L185,380L148,380L111,380L74,380L37,380L0,380Z"></path>
+
     </svg>
 </div>
 
@@ -120,6 +149,7 @@
     <svg width="200" height="200">
         <!-- Paste your HW 1 solution here -->
     </svg>
+    <script src="script.js"></script>
 </div>
 </body>
 </html>

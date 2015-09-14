@@ -1,9 +1,27 @@
-/*globals alert, document, d3, console*/
+
 // These keep JSHint quiet if you're using it (highly recommended!)
 
-function staircase() {
-    // ****** TODO: PART II ******
-}
+//part1
+ document.getElementById("staircase").onclick= function staircase() {
+    var num = 30;
+    var nodes = document.getElementById("bar-chart1").children;
+    console.log(nodes);
+    [].forEach.call(nodes,function(node){
+
+         node.setAttribute("height",num);
+         node.setAttribute("y",350-num);
+        num+=30;
+    });
+    //var array = Array.prototype.slice.call(nodes);
+    //array.forEach(function(i){
+    //    console.log(typeof i)
+    //    });
+};
+
+//part 2
+document.getElementById("dataset").onchange = function(event){
+    var data = d3.csv("data/"+event.srcElement.value +".csv",update);
+};
 
 function update(error, data) {
     if (error !== null) {
@@ -29,13 +47,26 @@ function update(error, data) {
             d.b = parseFloat(d.b);
         });
     }
+    var margin = {top: 25, right: 10, bottom: 10, left: 20};
+    var h = 390 - margin.top - margin.bottom;
+    var w = 400 - margin.right - margin.left;
+
+
+    //set width and height append a g element to hold the main
+    //content of the viz, apply margins
+
 
     // Set up the scales
     var aScale = d3.scale.linear()
         .domain([0, d3.max(data, function (d) {
             return d.a;
         })])
-        .range([0, 150]);
+        .range([0, h]);
+    var xScale = d3.scale.ordinal()
+        .domain(d3.range(data.length))
+        .rangeRoundBands([0,w],.05);
+    console.log(data.length);
+
     var bScale = d3.scale.linear()
         .domain([0, d3.max(data, function (d) {
             return d.b;
@@ -48,8 +79,58 @@ function update(error, data) {
     // ****** TODO: PART III (you will also edit in PART V) ******
 
     // TODO: Select and update the 'a' bar chart bars
+    var svg = d3.select('#bar-chart1')
+        .attr({
+            width: w + margin.right + margin.left,
+            height: h + margin.top + margin.bottom
+        })
+        .append("g")
+        .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+
+    var selection = d3.selectAll("#bar-chart1 rect")
+        .data(data);
+
+    //probably don't need since we are not adding extra elements
+    //selection.enter().append("rect");
+
+    selection
+        .transition()
+        .duration(1000)
+        .style("fill", "green")
+        .attr({
+        x: function(d,i){return Math.floor((xScale(i)))},
+        y: function(d){return Math.floor(h-aScale(d.a))},
+        width: function(){return Math.floor(xScale.rangeBand())},
+        height: function(d){return Math.floor(aScale(d.a))}
+    });
 
     // TODO: Select and update the 'b' bar chart bars
+    //var svg1 = d3.select('#bar-chart2')
+    //    .attr({
+    //        width: w + margin.right + margin.left,
+    //        height: h + margin.top + margin.bottom
+    //    })
+    //    .append("g")
+    //    .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+
+    var selection1 = d3.selectAll("#bar-chart2 rect")
+        .data(data);
+
+
+
+    //probably don't need since we are not adding extra elements
+    selection1.enter().append("rect");
+    selection1.exit().remove();
+    selection1
+        .transition()
+        .duration(1000)
+        .style("fill", "green")
+        .attr({
+            x: function(d,i){return Math.floor((xScale(i)))},
+            y: function(d){return Math.floor(h-aScale(d.b))},
+            width: function(){return Math.floor(xScale.rangeBand())},
+            height: function(d){return Math.floor(aScale(d.b))}
+        });
 
     // TODO: Select and update the 'a' line chart path using this line generator
     var aLineGenerator = d3.svg.line()
