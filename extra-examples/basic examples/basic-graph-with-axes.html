@@ -1,0 +1,101 @@
+<!--Used the book D3 tips and trips to help with this-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Graph</title>
+
+  <style> /* set the CSS */
+  body { font: 12px Arial;}
+  path {
+    stroke: steelblue; stroke-width: 3; fill: none;
+  }
+  .axis path, .axis line {
+    fill: none;
+    stroke: #888;
+    stroke-width: 1; shape-rendering: crispEdges;
+  }
+  </style>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+<script>
+  //set up margins
+  var margin ={top: 20, left:40, bottom:20, right:20};
+  var h = 300 - margin.top - margin.bottom;
+  var w = 650 - margin.left - margin.right;
+
+  //append svg and inner g with correct margins
+  var svg = d3.select('body')
+      .append('svg')
+      .attr("width",w +margin.left + margin.right)
+      .attr("height",h +margin.top +margin.bottom)
+      .append("g")
+      .attr("transform","translate("+margin.left +", "+margin.top+")");
+
+  var path = d3.svg.line()
+      .x(function(d){return xScale(d.date)})
+      .y(function(d){return yScale(d.close)});
+
+
+  var formatDate = d3.time.format("%d-%b-%y").parse;
+
+  //load the data
+  d3.csv('../data/stock1.csv',function(error,data){
+    if(error) {
+      alert("data could not be loaded");
+    }else{
+      data.forEach(function(d){
+        d.date = formatDate(d.date); //format date
+        d.close = +d.close;  //ensure d is converted to a number
+      });
+    }
+
+    //set up scales
+    var xScale =d3.time.scale()
+        .domain(d3.extent(data, function(d) { return d.date; }))
+        .range([0,w]);
+    var yScale = d3.scale.linear()
+        .domain([0,d3.max(data, function(d){return d.close;})])
+        .range([h,0]);
+
+    //set up the axes
+    var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom")
+        .ticks(5);
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(5);
+
+    svg.append('g')
+        .attr("class","x axis")
+        .attr("transform","translate(0," + h + ")")
+        .call(xAxis);
+    svg.append('g')
+        .attr("class","y axis")
+        .call(yAxis);
+
+    var path = d3.svg.line()
+        .x(function(d){return xScale(d.date)})
+        .y(function(d){return yScale(d.close)});
+
+    svg.append("path") // Add the valueline path.
+        .attr("class", "line")
+        .attr("d", path(data));
+
+  });
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

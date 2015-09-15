@@ -154,14 +154,20 @@ function update(error, data) {
         .duration(3000)
         .attr("d",bLineGenerator(data));
     // TODO: Select and update the 'a' area chart path using this line generator
+    createSvg('#area-chart1');
     var aAreaGenerator = d3.svg.area()
         .x(function (d, i) {
             return iScale(i);
         })
-        .y0(0)
+        .y0(h)
         .y1(function (d) {
             return aScale(d.a);
         });
+
+    d3.select("#area-chart1 path")
+        .transition()
+        .duration(3000)
+        .attr("d",aAreaGenerator(data));
 
     // TODO: Select and update the 'b' area chart path (create your own generator)
 
